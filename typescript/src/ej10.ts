@@ -17,6 +17,7 @@ export function err<T>(error: string): Result<T, string> {
 export function chain<T>(result: Result<T, string>, validator: Validator<T>): Result<T, string> {
   if (result.status === "error") { return result;}
   return validator(result.value);
+  //return result.status === "ok" ? validator(result.value);
 }
 
 // Encadena: nombre requerido, email válido (tiene @ y .), password >= 8 chars.
