@@ -3,15 +3,14 @@
 
 ;; Los primeros n pares positivos (2, 4, 6...).
 (defn primeros-n-pares [n]
-  ;; TODO: implementar
-  )
+  (take n (iterate #(+ 2 %) 2)))
 
 ;; Secuencia infinita de Fibonacci. DEBE ser lazy.
 (defn fibonacci []
-  ;; TODO: implementar con lazy-seq o iterate
-  )
+  (letfn [(fib-seq [] (lazy-seq (cons 0 (cons 1
+    (lazy-seq (map + (fib-seq) (rest (fib-seq))))))))]
+    (fib-seq)))
 
 ;; Toma elementos mientras sean menores que umbral.
 (defn tomar-mientras-menor [coll umbral]
-  ;; TODO: implementar
-  )
+  (take-while #(< % umbral) coll))

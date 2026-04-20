@@ -4,17 +4,23 @@
 
 ;; Retorna fn que valida value con pred. Ok → {:status :ok :value val}, error → {:status :error :error msg}.
 (defn make-validator [pred error-msg]
-  (fn [value] (if (pred value) {:status :ok :value value}
-    {:status :error :error error-msg})))
+  (fn [val] (if (pred val)
+      {:status :ok :value val}
+      {:status :error :error error-msg})))
 
 ;; Aplica validators en secuencia; para en el primer error.
 (defn validate-field [value & validators]
-  (reduce 
-    (fn [result validator] (if (= :error (:status result)) result (validator (:value result))))
+  (reduce (fn [result validator]
+      (if (= :error (:status result))
+        result (validator (:value result))))
     {:status :ok :value value} validators))
 
 (def validate-not-empty
-  (make-validator (fn [value] (not (empty? (str/trim (str value))))) "campo vacío"))
+  (make-validator
+    (fn [val] (not (empty? (str/trim (str val)))))
+    "campo vacío"))
 
 (def validate-email-format
-  (make-validator (fn [value] (boolean (re-matches #".+@.+\..+" (str value)))) "email inválido"))
+  (make-validator
+    (fn [val] (re-matches #".+@.+\..+" (str val)))
+    "email inválido"))
