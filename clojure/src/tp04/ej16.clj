@@ -13,10 +13,10 @@
 
 ;; Aplica todas las reglas a data. Retorna vector de {:field :error} (vacío si ok).
 (defn validate [rules data]
-  (filter identity (for [rule rules] (let [])))
-  )
+  (vec (filter identity (for [rule rules] 
+    (let [{:keys [field pred msg]} rule value (get data field)]
+    (if-not (pred value) {:field field :error msg} nil))))))
 
 ;; true si no hay errores.
 (defn valid? [rules data]
-  ;; TODO: implementar
-  )
+  (empty? (validate rules data)))
